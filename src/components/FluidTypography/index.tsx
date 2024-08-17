@@ -10,12 +10,13 @@ export default function FluidTypography({
   fontSize,
   ...props
 }: IFluidTypographyProps) {
-
+  
   const xsFontSize = `${(fontSize * 100) / 600}vw`;
   const smFontSize = `${(fontSize * 100) / 900}vw`;
   const mdFontSize = `${(fontSize * 100) / 1200}vw`;
   const lgFontSize = `${(fontSize * 100) / 1536}vw`;
-  
+  const xlFontSize = `${(fontSize * 100) / 1920}vw`;
+
   return (
     <Typography
       {...props}
@@ -24,7 +25,8 @@ export default function FluidTypography({
           xs: xsFontSize,
           sm: smFontSize,
           md: mdFontSize,
-          xl: lgFontSize,
+          lg: lgFontSize,
+          xl: xlFontSize,
         },
       }}
     >
