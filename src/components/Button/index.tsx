@@ -4,7 +4,7 @@
  * A custom Button component that extends the Material-UI Button.
  * It provides an option to display a loading spinner (CircularProgress)
  * while the button is in a loading state, enhancing the user experience.
- * 
+ *
  */
 
 import {
@@ -20,9 +20,9 @@ type ButtonProps = MuiButtonProps & {
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (props: ButtonProps, ref) => {
-    const { children, isLoading } = props;
+    const { children, isLoading, disabled } = props;
     return (
-      <MuiButton ref={ref} {...props}>
+      <MuiButton disabled={disabled || isLoading} ref={ref} {...props}>
         {isLoading ? (
           <CircularProgress sx={{ color: "white" }} size={20} />
         ) : (
