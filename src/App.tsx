@@ -6,11 +6,7 @@ function App() {
   return (
     <Box>
       <FluidTypography fontWeight={600} variant="h1" fontSize={62}>
-        Jelajahi kuliner khas{" "}
-        <Box color={"#fc3c04"} component={"span"}>
-          Yogyakarta
-        </Box>{" "}
-        dengan mudah
+        Jelajahi kuliner khas
       </FluidTypography>
       <FluidTypography fontWeight={300} fontSize={16}>
         Jelajahi ragam kuliner khas yogyakarta dan temukan tempat makan terbaik
