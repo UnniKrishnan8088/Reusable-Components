@@ -1,3 +1,12 @@
+/**
+ * @author Unni Krishnan
+ *
+ * A custom Button component that extends the Material-UI Button.
+ * It provides an option to display a loading spinner (CircularProgress)
+ * while the button is in a loading state, enhancing the user experience.
+ * 
+ */
+
 import {
   Button as MuiButton,
   ButtonProps as MuiButtonProps,
