@@ -29,14 +29,31 @@ export default function AppMenuItem({
   openMenuIds,
   setActiveParentId,
 }: AppMenuItemProps) {
+  const location = useLocation();
+  const navigate = useNavigate();
   const hasSubmenu = item.submenu && item.submenu.length > 0;
   const isParent = item?.parent;
   const isOpen = openMenuIds?.includes(item.id);
+
+  // Function to check if any submenu or the current item is active
+  const isActive = (menuItem: MenuItem): boolean => {
+    if (location.pathname === menuItem.path) {
+      return true;
+    }
+    if (menuItem.submenu) {
+      return menuItem.submenu.some(isActive); // Check if any submenu is active
+    }
+    return false;
+  };
+
+  const active = isActive(item);
+  const parentActive = activeParentId === item.id || active;
 
   const handleItemClick = () => {
     if (hasSubmenu) {
       handleToggle(item.id);
     } else {
+      navigate(item?.path as string);
       setActiveParentId(item.id); // Set the active parent ID on submenu item click
     }
   };
@@ -45,7 +62,7 @@ export default function AppMenuItem({
     <React.Fragment key={item.id}>
       <ListItem
         sx={{
-          background: item?.parent ? "#E5D9F2" : "",
+          background: parentActive && item?.parent ? "#ED2B2A" : "",
           borderRadius: "8px",
         }}
         disablePadding
@@ -55,39 +72,58 @@ export default function AppMenuItem({
             width: "fit-content",
             display: "flex",
             alignItems: "center",
-            // justifyContent: isDrawerOpen ? "initial" : "space-between",
+            justifyContent: "center",
             gap: 1,
-            // backgroundColor:
-            //   isParent && activeParentId === item.id
-            //     ? "lightblue"
-            //     : "transparent", // Highlight active item
           }}
           onClick={handleItemClick}
         >
           {isParent && (
-            <ListItemIcon sx={{ minWidth: 0 }}>{item.icon}</ListItemIcon>
+            <ListItemIcon
+              sx={{
+                minWidth: 0,
+                color: parentActive && item?.parent ? "white" : "black",
+              }}
+            >
+              {item.icon}
+            </ListItemIcon>
           )}
-          <Box sx={{ flex: 1 }}>
-            <ListItemText
-              sx={[
-                {
-                  "& .MuiListItemText-primary": {
-                    fontSize: "13px",
-                  },
+          <ListItemText
+            sx={[
+              {
+                "& .MuiListItemText-primary": {
+                  fontSize: "13px",
                 },
-                isDrawerOpen
-                  ? {
-                      opacity: 1,
-                    }
-                  : {
-                      opacity: 0,
-                    },
-              ]}
-              primary={item.title}
-            />
-          </Box>
+                color:
+                  location.pathname === item.path && item?.submenu
+                    ? "#ED2B2A"
+                    : location.pathname === item.path &&
+                      parentActive &&
+                      item?.parent
+                    ? "white"
+                    : "black",
+
+                flex: 1,
+                display: isDrawerOpen ? "block" : "none",
+              },
+              isDrawerOpen
+                ? {
+                    opacity: 1,
+                  }
+                : {
+                    opacity: 0,
+                  },
+            ]}
+            primary={item.title}
+          />
           {hasSubmenu && (
-            <ListItemIcon sx={{ minWidth: 0 }}>
+            <ListItemIcon
+              sx={{
+                minWidth: 0,
+                ...(!isDrawerOpen && { display: "none" }),
+                color: parentActive && item?.parent ? "white" : "black",
+                opacity: isDrawerOpen ? 1 : 0,
+              }}
+            >
               {isOpen ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon />}
             </ListItemIcon>
           )}
